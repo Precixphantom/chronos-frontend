@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    /* JavaScript target and modules */
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+
+    /* JSX for React 18+ */
+    "jsx": "react-jsx",
+
+    /* Base URL and path aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+
+    /* Types */
+    "types": ["node", "vite/client"],
+
+    /* Strictness */
+    "strict": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "strictNullChecks": false,
+
+    /* Other options */
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  
+  /* Include all source files */
+  "include": ["src"]
+}

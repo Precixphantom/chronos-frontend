@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 216 28% 7%;
+    --foreground: 213 31% 91%;
+
+    --card: 217 33% 10%;
+    --card-foreground: 213 31% 91%;
+
+    --popover: 217 33% 10%;
+    --popover-foreground: 213 31% 91%;
+
+    --primary: 189 97% 55%;
+    --primary-foreground: 217 33% 10%;
+
+    --secondary: 217 33% 15%;
+    --secondary-foreground: 213 31% 91%;
+
+    --muted: 217 33% 15%;
+    --muted-foreground: 213 20% 65%;
+
+    --accent: 262 83% 58%;
+    --accent-foreground: 213 31% 91%;
+
+    --success: 142 71% 45%;
+    --success-foreground: 213 31% 91%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 217 33% 10%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 213 31% 91%;
+
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 189 97% 55%;
+
+    --radius: 0.75rem;
+
+    --chart-1: 189 97% 55%;
+    --chart-2: 262 83% 58%;
+    --chart-3: 142 71% 45%;
+    --chart-4: 38 92% 50%;
+    --chart-5: 0 72% 51%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
