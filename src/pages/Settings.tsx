@@ -35,7 +35,7 @@ const Settings = () => {
     
     console.log('🔍 Sending request with value:', newValue);
     
-    const response = await axios.patch(
+    const response = await axios.post(
       '/api/settings/notifications', 
       { emailNotifications: newValue },
       { headers: { Authorization: `Bearer ${token}` } }
