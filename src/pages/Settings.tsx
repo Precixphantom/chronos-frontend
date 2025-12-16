@@ -23,8 +23,11 @@ const Settings = () => {
 
         const token = localStorage.getItem('token');
 
-        const res = await api.get('/settings/notifications', {        });
-        const res = await api.get('/settings/notifications');          localStorage.setItem(
+        const res = await api.get('/api/settings/notifications', {
+        });
+        if (typeof res.data.emailNotifications !== 'undefined') {
+          setEmailNotifications(res.data.emailNotifications);
+          localStorage.setItem(
             'emailNotifications',
             JSON.stringify(res.data.emailNotifications)
           );
@@ -51,10 +54,14 @@ const Settings = () => {
         { emailNotifications: newValue },
       
       );
-      const res = await api.post(
-        '/settings/notifications',
-        { emailNotifications: newValue },
-      );      }
+
+      if (res.data?.success) {
+        setEmailNotifications(newValue);
+        localStorage.setItem(
+          'emailNotifications',
+          JSON.stringify(newValue)
+        );
+      }
     } catch (err: any) {
       console.error('Full error:', err);
       alert(`Failed to update settings: ${err.message}`);
@@ -163,6 +170,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
-export default Settings;
 export default Settings;
