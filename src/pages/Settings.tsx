@@ -15,23 +15,16 @@ const Settings = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        // 1️⃣ Use cached value first
         const stored = localStorage.getItem('emailNotifications');
         if (stored !== null) {
           setEmailNotifications(JSON.parse(stored));
           return;
         }
 
-        // 2️⃣ Fetch from backend
         const token = localStorage.getItem('token');
 
-        const res = await api.get('/settings/notifications', {
-          
-        });
-
-        if (typeof res.data.emailNotifications !== 'undefined') {
-          setEmailNotifications(res.data.emailNotifications);
-          localStorage.setItem(
+        const res = await api.get('/settings/notifications', {        });
+        const res = await api.get('/settings/notifications');          localStorage.setItem(
             'emailNotifications',
             JSON.stringify(res.data.emailNotifications)
           );
@@ -54,18 +47,14 @@ const Settings = () => {
       const token = localStorage.getItem('token');
 
       const res = await api.post(
-        '/settings/notifications',
+        '/api/settings/notifications',
         { emailNotifications: newValue },
       
       );
-
-      if (res.data?.success) {
-        setEmailNotifications(newValue);
-        localStorage.setItem(
-          'emailNotifications',
-          JSON.stringify(newValue)
-        );
-      }
+      const res = await api.post(
+        '/settings/notifications',
+        { emailNotifications: newValue },
+      );      }
     } catch (err: any) {
       console.error('Full error:', err);
       alert(`Failed to update settings: ${err.message}`);
@@ -174,4 +163,6 @@ const Settings = () => {
   );
 };
 
+export default Settings;
+export default Settings;
 export default Settings;
