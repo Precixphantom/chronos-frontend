@@ -90,8 +90,26 @@ function TaskPage() {
     }
   };
 
+  // Format date + time safely
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString); // Handles ISO string correctly
+    return date.toLocaleString('en-US', {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    });
+  };
+
+  // Overdue check with accurate local time
   const isOverdue = (dueDate) => {
-    return new Date(dueDate) < new Date() && task.status !== 'completed';
+    if (!task) return false;
+    const now = new Date();
+    const due = new Date(dueDate);
+    return due.getTime() < now.getTime() && task.status !== 'completed';
   };
 
   if (loading) {
@@ -169,12 +187,7 @@ function TaskPage() {
                   <h3 className="text-sm font-semibold">Due Date</h3>
                 </div>
                 <p className={`text-lg font-bold ${isOverdue(task.dueDate) ? 'text-red-400' : 'text-white'}`}>
-                  {new Date(task.dueDate).toLocaleDateString('en-US', { 
-                    weekday: 'short', 
-                    year: 'numeric', 
-                    month: 'short', 
-                    day: 'numeric' 
-                  })}
+                  {formatDateTime(task.dueDate)}
                 </p>
                 {isOverdue(task.dueDate) && (
                   <p className="text-sm text-red-400 mt-1 flex items-center gap-1">
@@ -206,109 +219,9 @@ function TaskPage() {
                   <h3 className="text-sm font-semibold">Created</h3>
                 </div>
                 <p className="text-lg font-bold text-white">
-                  {new Date(task.createdAt).toLocaleDateString('en-US', { 
-                    month: 'short', 
-                    day: 'numeric',
-                    year: 'numeric'
-                  })}
+                  {formatDateTime(task.createdAt)}
                 </p>
               </div>
-            </div>
-
-            {/* Description */}
-            {task.description && (
-              <div className="mb-8">
-                <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                  <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                  </svg>
-                  Description
-                </h2>
-                <div className="bg-gray-800 border border-gray-700 p-5 rounded-xl">
-                  <p className="text-gray-300 whitespace-pre-wrap leading-relaxed">{task.description}</p>
-                </div>
-              </div>
-            )}
-
-            {/* Notes */}
-            {task.notes && (
-              <div className="mb-8">
-                <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                  <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                  </svg>
-                  Notes
-                </h2>
-                <div className="bg-amber-500/5 border border-amber-500/20 p-5 rounded-xl">
-                  <p className="text-gray-300 whitespace-pre-wrap leading-relaxed">{task.notes}</p>
-                </div>
-              </div>
-            )}
-
-            {/* Action Buttons */}
-            <div className="flex flex-wrap gap-4 pt-8 border-t border-gray-800">
-              {task.status !== 'completed' && (
-                <button
-                  onClick={handleMarkComplete}
-                  disabled={updating}
-                  className="flex-1 min-w-[200px] bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3.5 rounded-xl disabled:bg-gray-700 disabled:cursor-not-allowed transition-all font-semibold flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                  </svg>
-                  {updating ? 'Updating...' : 'Mark as Complete'}
-                </button>
-              )}
-
-              {task.status === 'completed' && (
-                <button
-                  onClick={() => handleStatusChange('pending')}
-                  disabled={updating}
-                  className="flex-1 min-w-[200px] bg-amber-600 hover:bg-amber-700 text-white px-6 py-3.5 rounded-xl disabled:bg-gray-700 disabled:cursor-not-allowed transition-all font-semibold flex items-center justify-center gap-2 shadow-lg shadow-amber-600/20"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                  </svg>
-                  {updating ? 'Updating...' : 'Mark as Pending'}
-                </button>
-              )}
-
-              <button
-                onClick={() => navigate(`/tasks/${taskId}/edit`)}
-                className="flex-1 min-w-[200px] bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white px-6 py-3.5 rounded-xl transition-all font-semibold flex items-center justify-center gap-2"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                </svg>
-                Edit Task
-              </button>
-
-              {task.course?._id && (
-                <button
-                  onClick={() => navigate(`/course/${task.course._id}`)}
-                  className="flex-1 min-w-[200px] bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white px-6 py-3.5 rounded-xl transition-all font-semibold flex items-center justify-center gap-2"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                  </svg>
-                  View Course
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Study Tip */}
-        <div className="mt-6 bg-blue-500/10 border border-blue-500/30 rounded-xl p-5">
-          <div className="flex items-start gap-3">
-            <svg className="w-6 h-6 text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-            </svg>
-            <div>
-              <h3 className="font-semibold text-blue-400 mb-1">Pro Tip</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                Break down large tasks into smaller, manageable chunks. This makes it easier to get started and helps you track progress more effectively!
-              </p>
             </div>
           </div>
         </div>
