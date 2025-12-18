@@ -31,7 +31,11 @@ const TaskDialog = ({ open, onOpenChange, onSubmit, isLoading }: TaskDialogProps
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ goal, deadline });
+    
+    // Convert local datetime to ISO string (includes timezone info)
+    const deadlineISO = new Date(deadline).toISOString();
+    
+    onSubmit({ goal, deadline: deadlineISO });
   };
 
   // Get minimum date (today)
