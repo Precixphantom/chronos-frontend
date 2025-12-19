@@ -104,14 +104,10 @@ I'm passionate about web development and always eager to learn from the communit
 **Precious Afolabi**  
 Building in public and documenting my software development journey
 
-[GitHub](https://github.com/Precixphantom) • [Portfolio](https://pchronos.vercel.app/)
+[GitHub](https://github.com/Precixphantom)
 
 ---
 
 ## 📝 License
 
 This project is open source and available under the MIT License.
-
----
-
-*Built with ☕ and React by a student developer committed to continuous learning and improvement.*
